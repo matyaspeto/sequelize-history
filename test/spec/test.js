@@ -372,7 +372,7 @@ test('authors: creates author field', t => {
 		authorFieldName: 'authorId'
 	});
 
-	t.equal(typeof sequelize.models.FruitHistory.attributes.authorId,
+	t.equal(typeof sequelize.models.FruitHistory.rawAttributes.authorId,
 		'object', 'tracks author field');
 });
 
@@ -404,7 +404,7 @@ test('authors: tracks revision author', t => {
 				Fruit.setRevisingAuthor(50);
 				return fruit.update({name: 'new-name'});
 			})
-			.then(() => sequelize.models.FruitHistory.find({where: {name: 'test'}}))
+			.then(() => sequelize.models.FruitHistory.findOne({where: {name: 'test'}}))
 			.then(fruitHistory => {
 				t.equal(typeof Fruit.setRevisingAuthor, 'function', 'writes method to model');
 				t.equal(fruitHistory.authorId, 50, 'tracks revision author');
@@ -488,7 +488,7 @@ test('attributes: ignore excluded attributes', t => {
 			.then(() => sequelize.models.Fruit.create({name: 'test-1', type: 'apple'}))
 			.then(() => sequelize.models.Fruit.create({name: 'test-2', type: 'pear'}))
 			.then(() => {
-				t.equal(typeof sequelize.models.FruitHistory.attributes.type,
+				t.equal(typeof sequelize.models.FruitHistory.rawAttributes.type,
 					'undefined', `no field when ignoring attribute`);
 				return resolve();
 			})
