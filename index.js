@@ -46,7 +46,9 @@ class SequelizeHistory {
 		sequelize.define(
 			this.modelName,
 			this.setAttributes(),
-			{});
+			{
+				timestamps: false // to keep model's own updatedAt, when model's updatedAt's default is defined with "Sequelize.literal"
+			});
 
 		// Store reference to the newly created tracking model
 		this.modelHistory = sequelize.models[this.modelName];
